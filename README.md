@@ -6,12 +6,15 @@ The "standalone" folder provides the implementation of the Transformer-CNN model
 
 # Dependencies
 
-The code has been tested in Ubuntu 18.04 with the following components:
+The code has been tested in Ubuntu 22 with the following components:
 
-1. python v.3.4.6 or higher
-2. TensorFlow v1.12
-3. rdkit v.2018.09.2
-4. molvs for tautomer enumeration
+1. python 3.6
+2. TensorFlow 1.12
+3. rdkit 2021.03.5
+4. molvs 0.1.1 (for tautomer enumeration)
+5. h5py 2.10.0
+
+A `conda` environment file is also available in the root directory (`transformer-cnn-env.yml`).
 
 # How to use
 

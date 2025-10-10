@@ -1,0 +1,18 @@
+name: transformer_cnn_env
+# actual transformer-cnn does not have a conda package
+# it must be downloaded from GitHub, but can then be run manually
+# we use this exact hash: 7009a997e9fe626913e7e28030d3e92e0eeba818
+# https://github.com/bigchem/transformer-cnn/tree/7009a997e9fe626913e7e28030d3e92e0eeba818
+# the remaining dependencies are taken from the README file at the above link
+# but adjusted to actually be installable - as provided, those dependencies
+# are incompatible given what packages are available on conda
+dependencies:
+  - python==3.6.*
+  - rdkit==2021.03.5
+  - molvs==0.1.1
+# not mentioned in the README, but required
+  - h5py==2.10.0  # bugs in other versions...
+# requested tensorflow version is not on conda
+  - pip
+  - pip:
+    - tensorflow==1.12.*
