@@ -1,6 +1,8 @@
 *.csv *.tar 
 
 gen/
+data/
+
 results.csv
 model.tar
 standalone/lrp.pdf
