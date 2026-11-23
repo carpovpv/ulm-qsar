@@ -7,14 +7,7 @@ from tf_setup import init_tensorflow
 
 import tensorflow as tf
 
-cfg = UlmConfig(
-    smiles_file="data/smiles.smi",
-    n_augmentations=10,
-    epochs=1000,
-    batch_size=64,
-    monitor_every_n_epochs=5,
-)
-
+cfg = UlmConfig()
 init_tensorflow(cfg)
 
 from tokenizer import CharSmilesTokenizer
@@ -30,7 +23,6 @@ from smi2smi.callbacks import (
     CheckpointAveragerCallback,
     GpuThermalGuardCallback
 )
-
 
 def main():
 
@@ -61,13 +53,16 @@ def main():
             ),
             tf.TensorSpec(shape=(None, None), dtype=tf.uint8),
         )
-        return tf.data.Dataset.from_generator(
-            gen, output_signature=output_signature
-        ).prefetch(tf.data.AUTOTUNE)
+        ds = tf.data.Dataset.from_generator(gen, output_signature=output_signature)
+        if is_training:
+            ds = ds.repeat()
+
+        return ds.prefetch(tf.data.AUTOTUNE)
 
     train_ds = make_tf_dataset(train_seq, is_training=True)
     val_ds = make_tf_dataset(val_seq, is_training=False)
 
+    steps_per_epoch = cfg.steps_per_epoch or len(train_seq)
 
     train_model, encoder_model, decoder_model = build_smi2smi_models(
         cfg, tokenizer = tokenizer
@@ -75,6 +70,7 @@ def main():
     train_model.summary()
 
     callbacks = [
+        tf.keras.callbacks.TerminateOnNaN(),
         CanonicalizationMonitorCallback(
             val_canon_smiles=val_canon_smiles,
             encoder_model=encoder_model,
@@ -88,7 +84,9 @@ def main():
 
     train_model.fit(
         train_ds,
+        steps_per_epoch = steps_per_epoch,
         validation_data=val_ds,
+        validation_steps = len(val_seq),
         epochs=cfg.epochs,
         callbacks=callbacks,
     )

@@ -172,7 +172,7 @@ def build_smi2smi_models(
     lr_schedule = NoamSchedule(warmup_steps=cfg.warmup_steps, lr_factor=cfg.lr_factor)
 
     train_model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule, beta_1=0.9, beta_2=0.98, epsilon=1e-9),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=lr_schedule, beta_1=0.9, beta_2=0.98, epsilon=1e-9, clipnorm=1.0),
         loss=masked_sparse_loss,
         metrics=[masked_sparse_acc],
     )
