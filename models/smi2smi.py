@@ -6,7 +6,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 
 from config import UlmConfig 
-from smi2smi.callbacks import NoamSchedule
+from schedule import NoamSchedule
 from tokenizer import BaseTokenizer
 
 class PositionalEncoding(layers.Layer):

@@ -61,3 +61,21 @@ class UlmConfig:
         os.makedirs(self.output_dir, exist_ok=True)
         if not self.epochs_to_average and self.epochs >= 5:
             self.epochs_to_average = list(range(self.epochs - 4, self.epochs + 1))
+
+
+@dataclass
+class QsarCNNConfig:
+    """Configuration for Karpov's Text-CNN + Highway molecular descriptor extractor."""
+
+    input_dim: int = 64  # Must match encoder embedding_size
+    kernel_sizes: List[int] = field(
+        default_factory=lambda: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
+    )
+    num_filters: List[int] = field(
+        default_factory=lambda: [100, 200, 200, 200, 200, 100, 100, 100, 100, 100, 160, 160]
+    )
+    dropout_rate: float = 0.25
+    output_dim: int = 256       # N_HIDDEN_CNN in original ulm-qsar
+    highway_bias: float = -1.0  # Initializes transform gate toward carrying identity
+
+

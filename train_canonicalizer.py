@@ -11,14 +11,14 @@ cfg = UlmConfig()
 init_tensorflow(cfg)
 
 from tokenizer import CharSmilesTokenizer
-from smi2smi.pipeline import (
+from pipelines.smi2smi import (
         prepare_canon_datasets, 
         CanonTrainSequence, 
         CanonValSequence
 )
 
-from smi2smi.model import build_smi2smi_models
-from smi2smi.callbacks import (
+from models.smi2smi import build_smi2smi_models
+from callbacks import (
     CanonicalizationMonitorCallback,
     CheckpointAveragerCallback,
     GpuThermalGuardCallback

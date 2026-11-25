@@ -2,6 +2,7 @@
 
 gen/
 data/
+runs/
 
 results.csv
 model.tar
